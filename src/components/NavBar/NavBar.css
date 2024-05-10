@@ -1,0 +1,17 @@
+nav a {
+  text-decoration: none;
+}
+.nav-container {
+  margin: 1em;
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+
+a {
+  background-color: black;
+  color: white;
+  padding: 0.5em;
+  font-size: medium;
+  border-radius: 0.5em;
+}

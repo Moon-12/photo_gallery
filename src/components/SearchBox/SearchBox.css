@@ -1,0 +1,9 @@
+.search-inp {
+  padding: 1em;
+  width: 20em;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+}

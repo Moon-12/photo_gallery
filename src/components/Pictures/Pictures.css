@@ -1,0 +1,13 @@
+.img-container {
+  /* display: flex;
+  flex-wrap: wrap;
+  
+  justify-content: center; */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1em;
+}
+img {
+  width: 7em;
+  height: 6em;
+}
