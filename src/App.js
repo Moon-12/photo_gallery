@@ -2,11 +2,9 @@ import "./App.css";
 import ErrorPage from "./components/ErrorPage";
 import Picture from "./components/Pictures/Pictures";
 import RootComp from "./components/RootComp";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  redirect,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 function App() {
   const router = createBrowserRouter([
     {
@@ -21,7 +19,11 @@ function App() {
       ],
     },
   ]);
-  return <RouterProvider router={router} />;
+  return (
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  );
 }
 
 export default App;
