@@ -2,10 +2,11 @@ nav a {
   text-decoration: none;
 }
 .nav-container {
-  margin: 1em;
+  margin: 1em 10%;
   display: flex;
   justify-content: center;
-  gap: 1em;
+  gap: 2em;
+  flex-wrap: wrap;
 }
 
 a {
@@ -14,4 +15,6 @@ a {
   padding: 0.5em;
   font-size: medium;
   border-radius: 0.5em;
+  flex: 1 1 0;
+  text-align: center;
 }
