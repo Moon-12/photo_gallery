@@ -1,4 +1,4 @@
-import { SearchIcon } from "../../svg/SearchIcon";
+import { SearchIcon } from "../../icons/SearchIcon";
 
 const SearchButton = () => {
   return (
