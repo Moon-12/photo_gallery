@@ -11,8 +11,8 @@ const NavBar = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(changeCategory());
-    dispatch(fetchImagesByTag(type, true));
+    // dispatch(changeCategory());
+    dispatch(fetchImagesByTag({ tag: type, initialLoad: true }));
   }, [type]);
 
   return (

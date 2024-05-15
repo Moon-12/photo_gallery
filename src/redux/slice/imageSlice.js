@@ -8,13 +8,13 @@ const initialState = {
   pages: 0,
   perPage: 36,
   total: 0,
-  initialLoad: true,
-  category: "mountain",
+  //initialLoad: true,
 };
 
 export const fetchImagesByTag = createAsyncThunk(
   "/images/fetchImagesByTag",
-  (tag, { getState }) => {
+  ({ tag, initialLoad }, { getState }) => {
+    console.log("initial", initialLoad);
     const curState = getState();
     const { page } = curState.imageReducer;
     return axios
@@ -23,7 +23,7 @@ export const fetchImagesByTag = createAsyncThunk(
     https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${tag}&per_page=${initialState.perPage}&page=${page}&format=json&nojsoncallback=1`
       )
       .then((res) => {
-        return { ...res.data };
+        return { ...res.data, initialLoad };
       })
       .catch((err) => {
         throw err;
@@ -39,9 +39,9 @@ export const imageSlice = createSlice({
       state.page = state.page + 1;
       state.initialLoad = false;
     },
-    changeCategory: (state, action) => {
-      state.initialLoad = true;
-    },
+    // changeCategory: (state, action) => {
+    //   state.initialLoad = true;
+    // },
   },
   extraReducers: (builder) => {
     builder
@@ -50,22 +50,23 @@ export const imageSlice = createSlice({
       })
       .addCase(fetchImagesByTag.fulfilled, (state, { payload }) => {
         state.isLoading = false;
+
         const { pages, total, photo, page } = payload.photos || {};
-        // console.log("in", initialLoad);
+
         state.page = page;
         state.pages = pages;
         state.total = total;
 
-        if (state.initialLoad) {
-          state.images = photo;
-        } else {
-          state.images = [...state.images, ...photo];
-        }
-        // if (initialLoad) {
+        // if (state.initialLoad) {
         //   state.images = photo;
         // } else {
         //   state.images = [...state.images, ...photo];
         // }
+        if (payload.initialLoad) {
+          state.images = photo;
+        } else {
+          state.images = [...state.images, ...photo];
+        }
       })
       .addCase(fetchImagesByTag.rejected, (state) => {
         state.isLoading = false;
