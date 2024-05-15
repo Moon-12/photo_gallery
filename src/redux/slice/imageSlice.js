@@ -8,18 +8,22 @@ const initialState = {
   pages: 0,
   perPage: 36,
   total: 0,
+  initialLoad: true,
+  category: "mountain",
 };
 
 export const fetchImagesByTag = createAsyncThunk(
   "/images/fetchImagesByTag",
-  (tag) => {
+  (tag, { getState }) => {
+    const curState = getState();
+    const { page } = curState.imageReducer;
     return axios
       .get(
         `
-    https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${tag}&per_page=${initialState.perPage}&format=json&nojsoncallback=1`
+    https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${tag}&per_page=${initialState.perPage}&page=${page}&format=json&nojsoncallback=1`
       )
       .then((res) => {
-        return res.data;
+        return { ...res.data };
       })
       .catch((err) => {
         throw err;
@@ -30,7 +34,15 @@ export const fetchImagesByTag = createAsyncThunk(
 export const imageSlice = createSlice({
   name: "image",
   initialState,
-  reducers: {},
+  reducers: {
+    changePage: (state) => {
+      state.page = state.page + 1;
+      state.initialLoad = false;
+    },
+    changeCategory: (state, action) => {
+      state.initialLoad = true;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchImagesByTag.pending, (state) => {
@@ -38,11 +50,22 @@ export const imageSlice = createSlice({
       })
       .addCase(fetchImagesByTag.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        const { page, pages, total, photo } = payload.photos;
+        const { pages, total, photo, page } = payload.photos || {};
+        // console.log("in", initialLoad);
         state.page = page;
         state.pages = pages;
         state.total = total;
-        state.images = photo;
+
+        if (state.initialLoad) {
+          state.images = photo;
+        } else {
+          state.images = [...state.images, ...photo];
+        }
+        // if (initialLoad) {
+        //   state.images = photo;
+        // } else {
+        //   state.images = [...state.images, ...photo];
+        // }
       })
       .addCase(fetchImagesByTag.rejected, (state) => {
         state.isLoading = false;
@@ -51,6 +74,6 @@ export const imageSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {} = imageSlice.actions;
+export const { changePage, changeCategory } = imageSlice.actions;
 
 export default imageSlice.reducer;

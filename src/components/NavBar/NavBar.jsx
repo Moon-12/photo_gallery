@@ -1,7 +1,7 @@
 import "./NavBar.css";
 import { Link, useParams } from "react-router-dom";
 import { ui_data } from "../../env/common_ui_metadata";
-import { fetchImagesByTag } from "../../redux/slice/imageSlice";
+import { changeCategory, fetchImagesByTag } from "../../redux/slice/imageSlice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 const NavBar = () => {
@@ -11,7 +11,8 @@ const NavBar = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchImagesByTag(type));
+    dispatch(changeCategory());
+    dispatch(fetchImagesByTag(type, true));
   }, [type]);
 
   return (
