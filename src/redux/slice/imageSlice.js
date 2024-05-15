@@ -3,7 +3,7 @@ import { apiKey } from "../../api/config";
 import axios from "axios";
 const initialState = {
   images: [],
-  loading: true,
+  isLoading: true,
   page: 1,
   pages: 0,
   perPage: 36,
@@ -34,10 +34,10 @@ export const imageSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchImagesByTag.pending, (state) => {
-        state.loading = "PENDING";
+        state.isLoading = true;
       })
       .addCase(fetchImagesByTag.fulfilled, (state, { payload }) => {
-        state.loading = "FULFILLED";
+        state.isLoading = false;
         const { page, pages, total, photo } = payload.photos;
         state.page = page;
         state.pages = pages;
@@ -45,7 +45,7 @@ export const imageSlice = createSlice({
         state.images = photo;
       })
       .addCase(fetchImagesByTag.rejected, (state) => {
-        state.loading = "REJECTED";
+        state.isLoading = false;
       });
   },
 });

@@ -1,3 +1,3 @@
 export const SearchIcon = () => {
-  return <span class="material-symbols-outlined">search</span>;
+  return <span className="material-symbols-outlined">search</span>;
 };
